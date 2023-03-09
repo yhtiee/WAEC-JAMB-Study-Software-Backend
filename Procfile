@@ -1,0 +1,1 @@
+web: gunicorn JAMB_WAEC_Study_software.wsgi
