@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-y-j+tn!zjvn19^4sozl%68e6-^-a-u61v!z(*fkti_gp8!*pp6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["waec-jamb-study-software-backend-production.up.railway.app", ]
 
 
 # Application definition
@@ -100,7 +100,7 @@ CORS_ALLOW_HEADERS = [
     "Content-Type"
 ]
 
-# CSRF_TRUSTED_ORIGINS = ['https://web-production-fa4e.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ["https://waec-jamb-study-software-backend-production.up.railway.app/"]
 
 ROOT_URLCONF = 'JAMB_WAEC_Study_software.urls'
 
