@@ -60,7 +60,7 @@ class SignUp(APIView):
                     "success":"user created"
                 })
         return Response(status=status.HTTP_400_BAD_REQUEST, data={
-                    "error":"only POST request allowed"
+                    "error":"only POST request allowed on this view"
                 })
 
 
