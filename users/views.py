@@ -7,7 +7,7 @@ from .serializers import *
 from rest_framework import status
 from django.contrib.auth.hashers import make_password
 from rest_framework.views import APIView
-from .models import User
+from django.contrib.auth.models import User
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -38,8 +38,6 @@ class SignUp(APIView):
             username = request.POST["username"]
             email = request.POST["email"]
             password = request.POST["password"]
-            career_choice = request.POST["career_choice"]
-            educational_level = request.POST["educational_level"]
 
             check_mail = User.objects.filter(email=email)
             check_user = User.objects.filter(username=username)
@@ -53,7 +51,7 @@ class SignUp(APIView):
                     "error":"user with username already exist"
                 })
             
-            user = User.objects.create_user(username=username, last_name = last_name, first_name=first_name, email=email, password=password, career_choice=career_choice, educational_level=educational_level)
+            user = User.objects.create(username=username, last_name = last_name, first_name=first_name, email=email, password=password,)
             user.save()
 
             return Response(status=status.HTTP_201_CREATED, data={
