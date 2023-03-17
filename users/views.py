@@ -32,14 +32,36 @@ def getRoutes(request):
 
 class SignUp(APIView):
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            password = serializer.validated_data.get('password')
-            serializer.validated_data['password'] = make_password(password)
-            serializer.validated_data['is_active'] = True
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if request.method == "POST":
+            last_name = request.POST["last_name"]
+            first_name = request.POST["first_name"]
+            username = request.POST["username"]
+            email = request.POST["email"]
+            password = request.POST["password"]
+            career_choice = request.POST["career_choice"]
+            educational_level = request.POST["educational_level"]
+
+            check_mail = User.objects.filter(email=email)
+            check_user = User.objects.filter(username=username)
+
+            if len(check_mail) > 0:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={
+                    "error":"user with mail already exist"
+                })
+            elif len(check_user) > 0:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={
+                    "error":"user with username already exist"
+                })
+            
+            user = User.objects.create_user(username=username, last_name = last_name, first_name=first_name, email=email, password=password, career_choice=career_choice, educational_level=educational_level)
+            user.save()
+
+            return Response(status=status.HTTP_201_CREATED, data={
+                    "success":"user created"
+                })
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={
+                    "error":"only POST request allowed"
+                })
 
 
 # class CreateCourseCombinationJamb(APIView):
