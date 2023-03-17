@@ -32,7 +32,7 @@ def getRoutes(request):
 
 class SignUp(APIView):
     def post(self, request):
-        serializer = User(data=request.data)
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             password = serializer.validated_data.get('password')
             serializer.validated_data['password'] = make_password(password)
