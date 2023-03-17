@@ -24,7 +24,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 @api_view(["GET"])
 def getRoutes(request):
     routes = [
-        "/api/login",
+        "/api/token",
         "/api/token/refresh"
     ]
     return Response(routes)
@@ -32,34 +32,14 @@ def getRoutes(request):
 
 class SignUp(APIView):
     def post(self, request):
-        if request.method == "POST":
-            last_name = request.POST["last_name"]
-            first_name = request.POST["first_name"]
-            username = request.POST["username"]
-            email = request.POST["email"]
-            password = request.POST["password"]
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            password = serializer.validated_data.get('password')
+            serializer.validated_data['password'] = make_password(password)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-            check_mail = User.objects.filter(email=email)
-            check_user = User.objects.filter(username=username)
-
-            if len(check_mail) > 0:
-                return Response(status=status.HTTP_400_BAD_REQUEST, data={
-                    "error":"user with mail already exist"
-                })
-            elif len(check_user) > 0:
-                return Response(status=status.HTTP_400_BAD_REQUEST, data={
-                    "error":"user with username already exist"
-                })
-            
-            user = User.objects.create(username=username, last_name = last_name, first_name=first_name, email=email, password=password,)
-            user.save()
-
-            return Response(status=status.HTTP_201_CREATED, data={
-                    "success":"user created"
-                })
-        return Response(status=status.HTTP_400_BAD_REQUEST, data={
-                    "error":"only POST request allowed on this view"
-                })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # class CreateCourseCombinationJamb(APIView):
