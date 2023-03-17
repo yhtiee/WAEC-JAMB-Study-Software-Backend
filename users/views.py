@@ -7,6 +7,7 @@ from .serializers import *
 from rest_framework import status
 from django.contrib.auth.hashers import make_password
 from rest_framework.views import APIView
+from .models import User
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
