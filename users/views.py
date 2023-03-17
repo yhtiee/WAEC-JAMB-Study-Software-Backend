@@ -36,9 +36,9 @@ class SignUp(APIView):
         if serializer.is_valid():
             password = serializer.validated_data.get('password')
             serializer.validated_data['password'] = make_password(password)
+            serializer.validated_data['is_active'] = True
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
