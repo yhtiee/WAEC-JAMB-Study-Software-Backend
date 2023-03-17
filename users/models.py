@@ -50,7 +50,7 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=254, blank=False, unique=True)
     first_name = models.CharField(max_length=256, blank=True)
     last_name = models.CharField(max_length=256, blank=True)
-    career_choice = models.CharField(max_length=256, blank=True)
+    career_choice = models.CharField(max_length=256, blank=True, null=True)
     educational_level = models.CharField(max_length=256, blank=True)
     date_joined = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(null=True, blank=True)

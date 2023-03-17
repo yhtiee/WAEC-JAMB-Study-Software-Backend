@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-y-j+tn!zjvn19^4sozl%68e6-^-a-u61v!z(*fkti_gp8!*pp6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["waec-jamb-study-software-backend-production.up.railway.app", ]
+ALLOWED_HOSTS = ["waec-jamb-study-software-backend-production.up.railway.app", "http://127.0.0.1:8080/", "127.0.0.1" ]
 
 
 # Application definition
@@ -136,7 +137,7 @@ DATABASES = {
         'HOST': 'containers-us-west-17.railway.app',
         'PORT': '8055',
     }
-    }
+}
 
 
 # Password validation
@@ -174,6 +175,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+
+if  DEBUG:
+    # Tell Django to copy statics to the `staticfiles` directory
+    # in your application directory on Render.
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Turn on WhiteNoise storage backend that takes care of compressing static files
+    # and creating unique names for each version so they can safely be cached forever.
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
