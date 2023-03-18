@@ -40,13 +40,8 @@ class SignUp(APIView):
 class CreateUserProfile(APIView):
     def post(self, request):
         user = request.user
-        user_data = {
-        'username': user.username,
-        'email': user.email,
-        }
-        return JsonResponse(user_data, encoder=DjangoJSONEncoder)
         if user :
-            user_details = User.objects.filter(username=user).values()
+            user_details = User.objects.filter(username=user.username).values()
             user_id = user_details[0]["id"]
             career_choice = request.data["career_choice"]
             educational_level = request.data["educational_level"]
