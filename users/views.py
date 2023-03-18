@@ -42,12 +42,24 @@ class SignUp(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class CreateCourseCombinationJamb(APIView):
-#     def post(self, request):
-#         user = request.user
-#         if user :
-#             user_details = User.objects.filter(username=user).values()
-#             user_id = user_details[0]["id"]
-#             course = user_details[0]["career_choice"]
+class CreateUserProfile(APIView):
+    def post(self, request):
+        user = request.user
+        if user :
+            user_details = User.objects.filter(username=user).values()
+            user_id = user_details[0]["id"]
+            career_choice = request.POST["career_choice"]
+            educational_level = request.POST["educational_level"]
+            path = UserProfile.objects.create(user_id = user_id, career_choice=career_choice, educational_level=educational_level)
+            path.save()
+            return Response(data={
+                "status":status.HTTP_201_CREATED,
+                "success": "profile successfully updated"
+            })
+        return Response(data={
+            "status":status.HTTP_404_NOT_FOUND,
+            "error": "user dosent exist"
+        })
+
             
 
