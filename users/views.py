@@ -45,11 +45,15 @@ class SignUp(APIView):
 class CreateUserProfile(APIView):
     def post(self, request):
         user = request.user
+        return Response(data={
+            "status": status.HTTP_200_OK,
+            "user":user
+        })
         if user :
             user_details = User.objects.filter(username=user).values()
             user_id = user_details[0]["id"]
-            career_choice = request.POST["career_choice"]
-            educational_level = request.POST["educational_level"]
+            career_choice = request.data["career_choice"]
+            educational_level = request.data["educational_level"]
             path = UserProfile.objects.create(user_id = user_id, career_choice=career_choice, educational_level=educational_level)
             path.save()
             return Response(data={
