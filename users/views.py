@@ -1,20 +1,15 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
 from rest_framework import status
 from django.contrib.auth.hashers import make_password
 from rest_framework.views import APIView
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import JsonResponse
 
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['username'] = user.username
-        return token
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -45,10 +40,11 @@ class SignUp(APIView):
 class CreateUserProfile(APIView):
     def post(self, request):
         user = request.user
-        return Response(data={
-            "status": status.HTTP_200_OK,
-            "user":user
-        })
+        user_data = {
+        'username': user.username,
+        'email': user.email,
+        }
+        return JsonResponse(user_data, encoder=DjangoJSONEncoder)
         if user :
             user_details = User.objects.filter(username=user).values()
             user_id = user_details[0]["id"]
